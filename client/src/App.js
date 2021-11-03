@@ -8,7 +8,7 @@ function App() {
   console.log(apiResponse);
 
   const callAPI = () => {
-    fetch("http://localhost:9000/testAPI")
+    fetch("http://localhost:9000/graphql")
       .then((res) => res.text())
       .then((res) => {
         setApiResponse(res);
