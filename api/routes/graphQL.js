@@ -25,7 +25,6 @@ const UserType = new GraphQLObjectType({
     properties: {
       type: new GraphQLList(PropertyType),
       resolve: async (user) => {
-        // return properties.filter((property) => property.userId === user.id);
         return await Property.find({ userId: user.id });
       },
     },
@@ -59,7 +58,6 @@ const RootQueryType = new GraphQLObjectType({
     users: {
       type: new GraphQLList(UserType),
       description: "List of All Users",
-      // resolve: () => users,
       resolve: async () => {
         return await User.find();
       },
@@ -68,7 +66,6 @@ const RootQueryType = new GraphQLObjectType({
     properties: {
       type: new GraphQLList(PropertyType),
       description: "List of All Properties",
-      // resolve: () => properties,
       resolve: async () => {
         return await Property.find();
       },
