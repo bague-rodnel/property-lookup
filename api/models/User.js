@@ -12,7 +12,6 @@ const userSchema = new mongoose.Schema({
     required: [true, "Please enter your last name"],
   },
   email: { type: String },
-  phone: { type: String },
 });
 
 module.exports = mongoose.model("User", userSchema);

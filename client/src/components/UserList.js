@@ -1,8 +1,10 @@
 import { useQuery } from "@apollo/client";
 import { getUsersQuery } from "../queries/queries";
 
-const UserList = () => {
-  const { loading, error, data } = useQuery(getUsersQuery);
+const UserList = ({ filter }) => {
+  const { loading, error, data } = useQuery(getUsersQuery, {
+    variables: { filter },
+  });
 
   if (loading) {
     return "...loading";

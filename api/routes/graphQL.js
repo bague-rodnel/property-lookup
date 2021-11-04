@@ -21,7 +21,6 @@ const UserType = new GraphQLObjectType({
     firstName: { type: new GraphQLNonNull(GraphQLString) },
     lastName: { type: new GraphQLNonNull(GraphQLString) },
     email: { type: new GraphQLNonNull(GraphQLString) },
-    phone: { type: new GraphQLNonNull(GraphQLString) },
     properties: {
       type: new GraphQLList(PropertyType),
       resolve: async (user) => {
@@ -111,7 +110,6 @@ const RootMutationType = new GraphQLObjectType({
         firstName: { type: new GraphQLNonNull(GraphQLString) },
         lastName: { type: new GraphQLNonNull(GraphQLString) },
         email: { type: new GraphQLNonNull(GraphQLString) },
-        phone: { type: new GraphQLNonNull(GraphQLString) },
       },
       resolve: async (parent, args) => {
         let user = new User({ ...args });
