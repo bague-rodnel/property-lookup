@@ -1,70 +1,25 @@
-import { useQuery, gql } from "@apollo/client";
 import { useState, useEffect } from "react";
+
 import "./App.css";
-
-const getUsersQuery = gql`
-  query {
-    users {
-      id
-      firstName
-      lastName
-      email
-      phone
-      properties {
-        id
-      }
-    }
-  }
-`;
-
-const getPropertiesQuery = gql`
-  query {
-    properties {
-      id
-      street
-      city
-      state
-      zip
-      rent
-      userId
-    }
-  }
-`;
+import PropertyList from "./components/PropertyList";
+import UserList from "./components/UserList";
 
 function App() {
-  // const [apiResponse, setApiResponse] = useState("");
-  const { loading, error, data } = useQuery(getPropertiesQuery);
-
-  // const callAPI = () => {
-  //   fetch("http://localhost:9000/graphql")
-  //     .then((res) => res.text())
-  //     .then((res) => {
-  //       setApiResponse(res);
-  //     });
-  // };
-
-  // useEffect(() => {
-  //   callAPI();
-  // }, []);
-
-  if (loading) {
-    return "...loading";
-  }
-  if (error) {
-    return "there was an error fetching the data";
-  }
-
-  console.log(data);
+  const [filter, setFilter] = useState("");
 
   return (
     <div className="App">
+      <form>
+        <input
+          type="text"
+          value={filter}
+          onChange={(e) => setFilter(e.target.value)}
+        />
+        <input type="submit" value="Search" />
+      </form>
       <div className="search-results">
-        <input type="text" />
-        <ul className="search-results__data">
-          {data.properties.map((property) => (
-            <li key={property.id}>{property.street}</li>
-          ))}
-        </ul>
+        <UserList filter={filter} />
+        <PropertyList filter={filter} />
       </div>
     </div>
   );

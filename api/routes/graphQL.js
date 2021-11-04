@@ -58,16 +58,22 @@ const RootQueryType = new GraphQLObjectType({
     users: {
       type: new GraphQLList(UserType),
       description: "List of All Users",
-      resolve: async () => {
-        return await User.find();
+      args: {
+        filter: { type: GraphQLString },
+      },
+      resolve: async (parent, { filter }) => {
+        return await User.find({ firstName: filter });
       },
     },
 
     properties: {
       type: new GraphQLList(PropertyType),
       description: "List of All Properties",
-      resolve: async () => {
-        return await Property.find();
+      args: {
+        filter: { type: GraphQLString },
+      },
+      resolve: async (parent, { filter }) => {
+        return await Property.find({ street: filter });
       },
     },
   }),
