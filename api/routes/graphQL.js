@@ -62,6 +62,10 @@ const RootQueryType = new GraphQLObjectType({
         filter: { type: GraphQLString },
       },
       resolve: async (parent, { filter }) => {
+        if (!filter) {
+          return await User.find({});
+        }
+
         return await User.find({
           $or: [{ firstName: filter }, { lastName: filter }],
         });
@@ -75,6 +79,10 @@ const RootQueryType = new GraphQLObjectType({
         filter: { type: GraphQLString },
       },
       resolve: async (parent, { filter }) => {
+        if (!filter) {
+          return await Property.find({});
+        }
+
         if (filter.length < 2) {
           return [];
         }

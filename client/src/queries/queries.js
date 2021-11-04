@@ -40,6 +40,10 @@ const addUserMutation = gql`
   }
 `;
 
-const addProperty = gql``;
+const addProperty = gql`
+  mutation {
+    addProperty(street: "", city: "", state: "", zip: "", rent: 0, userId)
+  }
+`;
 
 export { getUsersQuery, getPropertiesQuery };
