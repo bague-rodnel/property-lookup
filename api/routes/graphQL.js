@@ -40,7 +40,7 @@ const PropertyType = new GraphQLObjectType({
     city: { type: new GraphQLNonNull(GraphQLString) },
     state: { type: new GraphQLNonNull(GraphQLString) },
     zip: { type: new GraphQLNonNull(GraphQLString) },
-    rent: { type: new GraphQLNonNull(GraphQLString) },
+    rent: { type: new GraphQLNonNull(GraphQLInt) },
     userId: {
       type: UserType,
       resolve: (property) => {
@@ -84,7 +84,25 @@ const RootMutationType = new GraphQLObjectType({
       resolve: async (parent, args) => {
         let user = new User({ ...args });
         await user.save();
-        // return user;
+        return user;
+      },
+    },
+
+    addProperty: {
+      type: PropertyType,
+      description: "Add a property",
+      args: {
+        street: { type: new GraphQLNonNull(GraphQLString) },
+        city: { type: new GraphQLNonNull(GraphQLString) },
+        state: { type: new GraphQLNonNull(GraphQLString) },
+        zip: { type: new GraphQLNonNull(GraphQLString) },
+        rent: { type: new GraphQLNonNull(GraphQLInt) },
+        userId: { type: GraphQLString },
+      },
+      resolve: async (parent, args) => {
+        let property = new Property({ ...args });
+        await property.save();
+        return property;
       },
     },
   }),
