@@ -1,18 +1,5 @@
-import { useQuery, gql } from "@apollo/client";
-
-const getPropertiesQuery = gql`
-  query {
-    properties {
-      id
-      street
-      city
-      state
-      zip
-      rent
-      userId
-    }
-  }
-`;
+import { useQuery } from "@apollo/client";
+import { getPropertiesQuery } from "../queries/queries";
 
 const PropertyList = () => {
   const { loading, error, data } = useQuery(getPropertiesQuery);
