@@ -24,8 +24,9 @@ const UserType = new GraphQLObjectType({
     phone: { type: new GraphQLNonNull(GraphQLString) },
     properties: {
       type: new GraphQLList(PropertyType),
-      resolve: (user) => {
-        return properties.filter((property) => property.userId === user.id);
+      resolve: async (user) => {
+        // return properties.filter((property) => property.userId === user.id);
+        return await Property.find({ userId: user.id });
       },
     },
   }),
@@ -41,10 +42,11 @@ const PropertyType = new GraphQLObjectType({
     state: { type: new GraphQLNonNull(GraphQLString) },
     zip: { type: new GraphQLNonNull(GraphQLString) },
     rent: { type: new GraphQLNonNull(GraphQLInt) },
-    userId: {
+    userId: { type: GraphQLString },
+    user: {
       type: UserType,
-      resolve: (property) => {
-        return users.find((user) => user.id === property.id);
+      resolve: async (property) => {
+        return await User.findById(property.userId);
       },
     },
   }),
@@ -57,13 +59,19 @@ const RootQueryType = new GraphQLObjectType({
     users: {
       type: new GraphQLList(UserType),
       description: "List of All Users",
-      resolve: () => users,
+      // resolve: () => users,
+      resolve: async () => {
+        return await User.find();
+      },
     },
 
     properties: {
       type: new GraphQLList(PropertyType),
       description: "List of All Properties",
-      resolve: () => properties,
+      // resolve: () => properties,
+      resolve: async () => {
+        return await Property.find();
+      },
     },
   }),
 });
