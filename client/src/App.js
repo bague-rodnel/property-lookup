@@ -21,8 +21,8 @@ function App() {
         <input type="submit" value="Search" />
       </form>
       <div className="search-results">
-        <UserList filter={filter} />
         <PropertyList filter={filter} />
+        <UserList filter={filter} />
       </div>
     </div>
   );

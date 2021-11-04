@@ -1,8 +1,10 @@
 import { useQuery } from "@apollo/client";
 import { getPropertiesQuery } from "../queries/queries";
 
-const PropertyList = () => {
-  const { loading, error, data } = useQuery(getPropertiesQuery);
+const PropertyList = ({ filter }) => {
+  const { loading, error, data } = useQuery(getPropertiesQuery, {
+    variables: { filter },
+  });
 
   if (loading) {
     return "...loading";
