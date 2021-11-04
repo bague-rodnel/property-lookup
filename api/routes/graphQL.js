@@ -1,3 +1,5 @@
+const User = require("../models/User");
+const Property = require("../models/Property");
 const expressGraphQL = require("express-graphql").graphqlHTTP;
 const { graphqlHTTP } = require("express-graphql");
 const {
@@ -66,31 +68,31 @@ const RootQueryType = new GraphQLObjectType({
   }),
 });
 
-// const RootMutationType = new GraphQLObjectType({
-//   name: "Mutation",
-//   description: "Root Mutation",
-//   fields: () => ({
-//     addAuthor: {
-//       type: AuthorType,
-//       description: "Add an author",
-//       args: {
-//         name: { type: new GraphQLNonNull(GraphQLString) },
-//       },
-//       resolve: (parent, args) => {
-//         const author = {
-//           id: authors.length + 1,
-//           name: args.name,
-//         };
-//         authors.push(author);
-//         return author;
-//       },
-//     },
-//   }),
-// });
+const RootMutationType = new GraphQLObjectType({
+  name: "Mutation",
+  description: "Root Mutation",
+  fields: () => ({
+    addUser: {
+      type: UserType,
+      description: "Add a user",
+      args: {
+        firstName: { type: new GraphQLNonNull(GraphQLString) },
+        lastName: { type: new GraphQLNonNull(GraphQLString) },
+        email: { type: new GraphQLNonNull(GraphQLString) },
+        phone: { type: new GraphQLNonNull(GraphQLString) },
+      },
+      resolve: async (parent, args) => {
+        let user = new User({ ...args });
+        await user.save();
+        // return user;
+      },
+    },
+  }),
+});
 
 const schema = new GraphQLSchema({
   query: RootQueryType,
-  // mutation: RootMutationType,
+  mutation: RootMutationType,
 });
 
 const graphql = graphqlHTTP({
