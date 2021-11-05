@@ -11,7 +11,7 @@ const {
   GraphQLNonNull,
 } = require("graphql");
 
-const { users, properties } = require("../data");
+// const { users, properties } = require("../data");
 
 const UserType = new GraphQLObjectType({
   name: "User",
@@ -58,15 +58,15 @@ const RootQueryType = new GraphQLObjectType({
       type: new GraphQLList(UserType),
       description: "List of All Users",
       args: {
-        filter: { type: GraphQLString },
+        keyword: { type: GraphQLString },
       },
-      resolve: async (parent, { filter }) => {
-        if (!filter) {
+      resolve: async (parent, { keyword }) => {
+        if (!keyword) {
           return await User.find({});
         }
 
         return await User.find({
-          $or: [{ firstName: filter }, { lastName: filter }],
+          $or: [{ firstName: keyword }, { lastName: keyword }],
         });
       },
     },
@@ -75,22 +75,22 @@ const RootQueryType = new GraphQLObjectType({
       type: new GraphQLList(PropertyType),
       description: "List of All Properties",
       args: {
-        filter: { type: GraphQLString },
+        keyword: { type: GraphQLString },
       },
-      resolve: async (parent, { filter }) => {
-        if (!filter) {
+      resolve: async (parent, { keyword }) => {
+        if (!keyword) {
           return await Property.find({});
         }
 
-        if (filter.length < 2) {
+        if (keyword.length < 2) {
           return [];
         }
 
         return await Property.find({
           $or: [
-            { street: { $regex: filter, $options: "i" } },
-            { city: filter },
-            { state: { $regex: filter } },
+            { street: { $regex: keyword, $options: "i" } },
+            { city: keyword },
+            { state: { $regex: keyword } },
           ],
         });
         //

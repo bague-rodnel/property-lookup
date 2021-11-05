@@ -1,17 +1,23 @@
+import { useQuery } from "@apollo/client";
 import { useState, useEffect, useRef } from "react";
 
 import "./App.css";
+import Menu from "./components/Menu";
 import PropertyList from "./components/PropertyList";
 import UserList from "./components/UserList";
+import { searchQuery } from "./queries/queries";
 
 function App() {
-  const [filter, setFilter] = useState("");
+  const [keyword, setKeyword] = useState("");
   const inputRef = useRef(null);
+  const { loading, error, data } = useQuery(searchQuery, {
+    variables: { keyword },
+  });
 
   const handleSearch = (e) => {
     e.preventDefault();
 
-    setFilter(inputRef.current.value);
+    setKeyword(inputRef.current.value);
   };
 
   return (
@@ -21,8 +27,15 @@ function App() {
         <input type="submit" value="Search" />
       </form>
       <div className="search-results">
-        <PropertyList filter={filter} />
-        <UserList filter={filter} />
+        {loading ? (
+          <p>...loading</p>
+        ) : (
+          <>
+            <Menu data={data} />
+            <PropertyList properties={data.properties} />
+            <UserList users={data.users} />
+          </>
+        )}
       </div>
     </div>
   );

@@ -30,6 +30,31 @@ const getPropertiesQuery = gql`
   }
 `;
 
+const searchQuery = gql`
+  query search($keyword: String) {
+    properties(keyword: $keyword) {
+      id
+      street
+      city
+      state
+      zip
+      rent
+      userId
+    }
+    users(keyword: $keyword) {
+      id
+      firstName
+      lastName
+      email
+      properties {
+        city
+        state
+        zip
+      }
+    }
+  }
+`;
+
 const addUserMutation = gql`
   mutation ($firstName: String!, $lastName: String!, $email: String!) {
     addUser(firstName: $firstName, lastName: $lastName, email: $email) {
@@ -61,4 +86,10 @@ const addPropertyMutation = gql`
   }
 `;
 
-export { getUsersQuery, getPropertiesQuery };
+export {
+  getUsersQuery,
+  getPropertiesQuery,
+  searchQuery,
+  addUserMutation,
+  addPropertyMutation,
+};
