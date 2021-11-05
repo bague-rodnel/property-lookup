@@ -11,8 +11,8 @@ const PropertyList = ({ data }) => {
       <Container>
         <Row>
           {data.map((property) => {
-            const { id, street, city, state, zip, rent, photo, userId } =
-              property;
+            console.log(property);
+            const { id, street, city, state, zip, rent, photo } = property;
             return (
               <Col
                 xs={12}

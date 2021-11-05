@@ -4,8 +4,6 @@ import { TabsStyled } from "./styles/Tabs.styled";
 const Tabs = ({ children }) => {
   const [activeTab, setActiveTab] = useState(children[0].props.id);
 
-  console.log(activeTab);
-
   const onClickTabItem = (tab) => {
     setActiveTab(tab);
   };
