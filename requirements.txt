@@ -30,7 +30,6 @@ which should return users and/or properties that match the search string.
 if the result contains a user, the users properties must also be shown for the results.
   -- filter users
   -- filter properties
-  -- populate view accordingly like in github searches
 
 On the frontend, build a single page app which will show a text input and a submit button. Once the submit button is clicked, it will then send an asynchronous request to your GraphQL server and do the search based on the string input. Finally, display the result (properties) in list format.
 

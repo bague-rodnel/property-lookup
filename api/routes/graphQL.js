@@ -9,142 +9,77 @@ const {
   GraphQLList,
   GraphQLInt,
   GraphQLNonNull,
+  buildSchema,
 } = require("graphql");
 
 // const { users, properties } = require("../data");
 
-const UserType = new GraphQLObjectType({
-  name: "User",
-  description: "This represents a user",
-  fields: () => ({
-    id: { type: new GraphQLNonNull(GraphQLString) },
-    firstName: { type: new GraphQLNonNull(GraphQLString) },
-    lastName: { type: new GraphQLNonNull(GraphQLString) },
-    email: { type: new GraphQLNonNull(GraphQLString) },
-    properties: {
-      type: new GraphQLList(PropertyType),
-      resolve: async (user) => {
-        return await Property.find({ userId: user.id });
-      },
-    },
-  }),
-});
+let schema = buildSchema(`
+  type UserType {
+    id: String,
+    firstName: String,
+    lastName: String,
+    email: String,
+    properties: [PropertyType]
+  }
 
-const PropertyType = new GraphQLObjectType({
-  name: "Property",
-  description: "This represents a property",
-  fields: () => ({
-    id: { type: new GraphQLNonNull(GraphQLString) },
-    street: { type: new GraphQLNonNull(GraphQLString) },
-    city: { type: new GraphQLNonNull(GraphQLString) },
-    state: { type: new GraphQLNonNull(GraphQLString) },
-    zip: { type: new GraphQLNonNull(GraphQLString) },
-    rent: { type: new GraphQLNonNull(GraphQLInt) },
-    userId: { type: GraphQLString },
-    user: {
-      type: UserType,
-      resolve: async (property) => {
-        return await User.findById(property.userId);
-      },
-    },
-  }),
-});
+  type PropertyType {
+    id: String,
+    street: String,
+    city: String,
+    state: String,
+    zip: String,
+    rent: Int,
+    photo: String,
+    userId: String,
+    user: UserType
+  }
 
-const RootQueryType = new GraphQLObjectType({
-  name: "Query",
-  description: "Root Query",
-  fields: () => ({
-    users: {
-      type: new GraphQLList(UserType),
-      description: "List of All Users",
-      args: {
-        keyword: { type: GraphQLString },
-      },
-      resolve: async (parent, { keyword }) => {
-        if (!keyword) {
-          return await User.find({});
-        }
+  type SearchType {
+    Users: [UserType],
+    Properties: [PropertyType]
+  }
 
-        return await User.find({
-          $or: [{ firstName: keyword }, { lastName: keyword }],
-        });
-      },
-    },
+  type Query {
+    search(keyword: String, zip: String): SearchType
+  }
+`);
 
-    properties: {
-      type: new GraphQLList(PropertyType),
-      description: "List of All Properties",
-      args: {
-        keyword: { type: GraphQLString },
-      },
-      resolve: async (parent, { keyword }) => {
-        if (!keyword) {
-          return await Property.find({});
-        }
+let root = {
+  search: async ({ keyword, zip }) => {
+    let result = { Users: [], Properties: [] };
 
-        if (keyword.length < 2) {
-          return [];
-        }
+    if (zip) {
+      result.Properties = await Property.find({ zip: zip });
+    }
 
-        return await Property.find({
-          $or: [
-            { street: { $regex: keyword, $options: "i" } },
-            { city: keyword },
-            { state: { $regex: keyword } },
-          ],
-        });
-        //
-      },
-    },
-  }),
-});
+    if (keyword) {
+      result.Users = await User.find({
+        $or: [{ firstName: keyword }, { lastName: keyword }],
+      });
 
-const RootMutationType = new GraphQLObjectType({
-  name: "Mutation",
-  description: "Root Mutation",
-  fields: () => ({
-    addUser: {
-      type: UserType,
-      description: "Add a user",
-      args: {
-        firstName: { type: new GraphQLNonNull(GraphQLString) },
-        lastName: { type: new GraphQLNonNull(GraphQLString) },
-        email: { type: new GraphQLNonNull(GraphQLString) },
-      },
-      resolve: async (parent, args) => {
-        let user = new User({ ...args });
-        await user.save();
-        return user;
-      },
-    },
+      result.Properties = await Property.find({
+        street: { $regex: keyword, $options: "i" },
+      });
+    }
+    return result;
+  },
 
-    addProperty: {
-      type: PropertyType,
-      description: "Add a property",
-      args: {
-        street: { type: new GraphQLNonNull(GraphQLString) },
-        city: { type: new GraphQLNonNull(GraphQLString) },
-        state: { type: new GraphQLNonNull(GraphQLString) },
-        zip: { type: new GraphQLNonNull(GraphQLString) },
-        rent: { type: new GraphQLNonNull(GraphQLInt) },
-        userId: { type: GraphQLString },
-      },
-      resolve: async (parent, args) => {
-        let property = new Property({ ...args });
-        await property.save();
-        return property;
-      },
-    },
-  }),
-});
+  properties: async (user) => {
+    const found = await Property.find({ userId: user.id });
+    console.log(found);
+    return found;
+  },
 
-const schema = new GraphQLSchema({
-  query: RootQueryType,
-  mutation: RootMutationType,
-});
+  user: async (property) => {
+    console.log("invokered");
+    return await User.findById(property.userId);
+  },
+};
 
 const graphql = graphqlHTTP({
   schema: schema,
+  rootValue: root,
   graphiql: true,
 });
 

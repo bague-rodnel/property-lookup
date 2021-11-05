@@ -10,12 +10,14 @@ import Autocomplete from "react-google-autocomplete";
 
 const Search = () => {
   const [keyword, setKeyword] = useState("");
+  const [zip, setZip] = useState("");
   const [inputVal, setInputVal] = useState("");
-  // const { loading, error, data } = useQuery(searchQuery, {
-  //   variables: { keyword },
-  // });
-  const { loading, error, data } = useQuery(searchQuery);
+  const { loading, error, data } = useQuery(searchQuery, {
+    variables: { keyword: keyword, zip: zip },
+  });
+  // const { loading, error, data } = useQuery(searchQuery);
 
+  console.log({ keyword, zip });
   if (!loading) {
     console.log(data);
   }
@@ -27,8 +29,8 @@ const Search = () => {
     setKeyword(inputVal);
   };
 
-  const isValidUSZip = (zip) => {
-    return /^\d{5}(-\d{4})?$/.test(zip);
+  const isValidUSZip = (zip_code) => {
+    return /^\d{5}(-\d{4})?$/.test(zip_code);
   };
 
   return (
@@ -45,12 +47,16 @@ const Search = () => {
             apiKey={process.env.REACT_APP_MAPS_API_KEY}
             placeholder="Enter a location"
             onPlaceSelected={(place) => {
+              setKeyword("");
+              setZip("");
               console.log(place);
               if (place.name) {
                 // try parse if zipcode
                 if (isValidUSZip(place.name)) {
+                  setZip(place.name);
                   console.log("us zip code found");
                 } else {
+                  setKeyword(place.name);
                   // handle as a keyword search on street
                   // or name of user
                 }
@@ -59,13 +65,14 @@ const Search = () => {
                   (component) => component.types.includes("postal_code")
                 );
 
-                const zip = zip_component && zip_component.short_name;
+                const zip_string = zip_component && zip_component.short_name;
 
-                if (zip) {
+                if (zip_string) {
                   // at this point the city and state will also match the addresses in the mock as they are valid us addresses so we only match zip codes in query
+                  setZip(zip_string);
+                } else {
+                  setZip("");
                 }
-
-                console.log(zip);
               } else {
                 // unknown input entry
               }
@@ -82,8 +89,8 @@ const Search = () => {
           ) : (
             <>
               <Tabs>
-                <PropertyList id="properties" data={data.search.properties} />
-                <UserList id="users" data={data.search.users} />
+                <PropertyList id="properties" data={data.search.Properties} />
+                <UserList id="users" data={data.search.Users} />
               </Tabs>
             </>
           )}

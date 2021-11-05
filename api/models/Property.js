@@ -23,6 +23,9 @@ const propertySchema = new mongoose.Schema({
     type: Number,
     required: [true, "Please enter the rent"],
   },
+  photo: {
+    type: String,
+  },
   userId: {
     type: String,
   },
