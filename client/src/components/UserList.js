@@ -1,7 +1,7 @@
 import { useQuery } from "@apollo/client";
 import { getUsersQuery } from "../queries/queries";
 
-const UserList = ({ users }) => {
+const UserList = ({ data }) => {
   // const { loading, error, data } = useQuery(getUsersQuery, {
   //   variables: { filter },
   // });
@@ -19,8 +19,8 @@ const UserList = ({ users }) => {
 
   return (
     <ul className="search-results__users">
-      {users.map((user) => (
-        <li key={user.id}>{user.firstName}</li>
+      {data.map((row) => (
+        <li key={row.id}>{row.firstName}</li>
       ))}
     </ul>
   );

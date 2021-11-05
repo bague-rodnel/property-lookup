@@ -1,8 +1,8 @@
 import { gql } from "@apollo/client";
 
 const getUsersQuery = gql`
-  query ($filter: String) {
-    users(filter: $filter) {
+  query ($keyword: String = "") {
+    users(keyword: $keyword) {
       id
       firstName
       lastName
@@ -17,21 +17,7 @@ const getUsersQuery = gql`
 `;
 
 const getPropertiesQuery = gql`
-  query ($filter: String) {
-    properties(filter: $filter) {
-      id
-      street
-      city
-      state
-      zip
-      rent
-      userId
-    }
-  }
-`;
-
-const searchQuery = gql`
-  query search($keyword: String) {
+  query ($keyword: String = "'") {
     properties(keyword: $keyword) {
       id
       street
@@ -39,6 +25,22 @@ const searchQuery = gql`
       state
       zip
       rent
+      photo
+      userId
+    }
+  }
+`;
+
+const searchQuery = gql`
+  query search($keyword: String = "") {
+    properties(keyword: $keyword) {
+      id
+      street
+      city
+      state
+      zip
+      rent
+      photo
       userId
     }
     users(keyword: $keyword) {

@@ -1,38 +1,47 @@
-.App {
-  text-align: center;
+li {
+  list-style-type: none;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+.tab-list {
+  border-bottom: 1px solid #ccc;
+  padding-left: 0;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
+.tab-list-item {
+  list-style: none;
+  margin-bottom: -1px;
+  padding: 0.5rem 0.75rem;
+  cursor: pointer;
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
+  display: inline-flex;
   align-items: center;
   justify-content: center;
-  font-size: calc(10px + 2vmin);
+  gap: 0.25rem;
+}
+
+.tab-list-active {
+  /* background-color: white; */
+  /* border: solid #ccc; */
+  /* border-width: 1px 1px 0 1px; */
+  border: 1px solid #ff7201;
+  /* background-color: #ff7201; */
+  color: #333333;
+}
+
+.tab-list-item .tab-list__pill {
+  background-color: #a8a8a8;
+
   color: white;
+  font-size: 0.6rem;
+  border-radius: 50%;
+  width: 1.5rem;
+  height: 1.5rem;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-.App-link {
-  color: #61dafb;
-}
-
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.tab-list__pill.pill-active {
+  background-color: #ff7201;
 }

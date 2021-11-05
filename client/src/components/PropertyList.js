@@ -1,28 +1,41 @@
 import { useQuery } from "@apollo/client";
 import { getPropertiesQuery } from "../queries/queries";
+import { Card, Button, Container, Row, Col } from "react-bootstrap";
+import { FiMapPin } from "react-icons/fi";
 
-const PropertyList = ({ properties }) => {
-  // const { loading, error, data } = useQuery(getPropertiesQuery, {
-  //   variables: { filter },
-  // });
-
-  // if (loading) {
-  //   return "...loading";
-  // }
-  // if (error) {
-  //   return "there was an error fetching the data";
-  // }
-
-  // if (data.properties.length < 0) {
-  //   return null;
-  // }
-
+const PropertyList = ({ data }) => {
   return (
-    <ul className="search-results__properties">
-      {properties.map((property) => (
-        <li key={property.id}>{property.street}</li>
-      ))}
-    </ul>
+    <div className="search-results__properties">
+      <Container>
+        <Row>
+          {data.map((property) => {
+            const { id, street, city, state, zip, rent, photo, userId } =
+              property;
+            return (
+              <Col
+                xs={12}
+                md={6}
+                lg={4}
+                xl={3}
+                key={id}
+                style={{ marginBottom: "2rem" }}
+              >
+                <Card>
+                  <Card.Img variant="top" src={photo} />
+                  <Card.Body>
+                    <Card.Text>${rent.toLocaleString("en-US")}</Card.Text>
+                    <div>
+                      <FiMapPin className="address-pin" />
+                      {`${street}, ${city}, ${state}, ${zip}`}
+                    </div>
+                  </Card.Body>
+                </Card>
+              </Col>
+            );
+          })}
+        </Row>
+      </Container>
+    </div>
   );
 };
 
