@@ -1,11 +1,13 @@
 import { useQuery } from "@apollo/client";
 import { getPropertiesQuery } from "../queries/queries";
 import { Card, Button, Container, Row, Col } from "react-bootstrap";
-import { FiMapPin } from "react-icons/fi";
+import { IoMdPin } from "react-icons/io";
+
+import { PropertyListStyled } from "./styles/PropertyList.styled";
 
 const PropertyList = ({ data }) => {
   return (
-    <div className="search-results__properties">
+    <PropertyListStyled className="property-list">
       <Container>
         <Row>
           {data.map((property) => {
@@ -24,8 +26,11 @@ const PropertyList = ({ data }) => {
                   <Card.Img variant="top" src={photo} />
                   <Card.Body>
                     <Card.Text>${rent.toLocaleString("en-US")}</Card.Text>
-                    <div>
-                      <FiMapPin className="address-pin" />
+                    <div
+                      className="address"
+                      title={`${street}, ${city}, ${state}, ${zip}`}
+                    >
+                      <IoMdPin className="address-pin" />
                       {`${street}, ${city}, ${state}, ${zip}`}
                     </div>
                   </Card.Body>
@@ -35,7 +40,7 @@ const PropertyList = ({ data }) => {
           })}
         </Row>
       </Container>
-    </div>
+    </PropertyListStyled>
   );
 };
 

@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { TabsStyled } from "./styles/Tabs.styled";
 
 const Tabs = ({ children }) => {
   const [activeTab, setActiveTab] = useState(children[0].props.id);
@@ -9,31 +10,29 @@ const Tabs = ({ children }) => {
     setActiveTab(tab);
   };
   return (
-    <div>
-      <div className="tabs">
-        <ol className="tab-list">
-          {children.map((child) => {
-            const { id, data } = child.props;
+    <TabsStyled className="tabs">
+      <ol className="tab-list">
+        {children.map((child) => {
+          const { id, data } = child.props;
 
-            return (
-              <Tab
-                activeTab={activeTab}
-                key={id}
-                id={id}
-                length={data.length}
-                onClick={onClickTabItem}
-              />
-            );
-          })}
-        </ol>
-        <div className="tab-content">
-          {children.map((child) => {
-            if (child.props.id !== activeTab) return null;
-            return child;
-          })}
-        </div>
+          return (
+            <Tab
+              activeTab={activeTab}
+              key={id}
+              id={id}
+              length={data.length}
+              onClick={onClickTabItem}
+            />
+          );
+        })}
+      </ol>
+      <div className="tab-content">
+        {children.map((child) => {
+          if (child.props.id !== activeTab) return null;
+          return child;
+        })}
       </div>
-    </div>
+    </TabsStyled>
   );
 };
 
