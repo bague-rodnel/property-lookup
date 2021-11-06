@@ -26,8 +26,10 @@ const propertySchema = new mongoose.Schema({
   photo: {
     type: String,
   },
-  userId: {
-    type: String,
+  user: {
+    type: mongoose.Schema.Types.ObjectId,
+    required: true,
+    ref: "User",
   },
 });
 
