@@ -42,6 +42,7 @@ let typeDefs = gql`
 
   type Query {
     search(filters: FiltersInput): SearchType
+    property(id: String): PropertyType
   }
 `;
 
@@ -79,6 +80,10 @@ let resolvers = {
         // unknown
       }
       return result;
+    },
+
+    property: async (root, { id }) => {
+      return await Property.findById(id);
     },
   },
   UserType: {

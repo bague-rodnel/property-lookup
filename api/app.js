@@ -8,7 +8,7 @@ const cors = require("cors");
 const mongoose = require("mongoose");
 const app = express();
 require("dotenv").config();
-const { typeDefs, resolvers } = require("./routes/graphQL");
+const { typeDefs, resolvers } = require("./graphql/graphql");
 
 (async () => {
   try {
