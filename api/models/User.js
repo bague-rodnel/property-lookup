@@ -11,7 +11,11 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: [true, "Please enter your last name"],
   },
-  email: { type: String },
+  email: {
+    type: String,
+    required: "Please enter email",
+  },
+  avatar: String,
 });
 
 module.exports = mongoose.model("User", userSchema);

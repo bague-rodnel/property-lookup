@@ -247,30 +247,35 @@ const users = [
     firstName: "Ric",
     lastName: "Brighty",
     email: "rbrighty0@kickstarter.com",
+    avatar: "https://i.pravatar.cc/200?u=66593a12-e0ad-4bec-9fd9-297bbc95a46c",
   },
   {
     _id: ObjectId("6182d60cfc13ae2f6d000209"),
     firstName: "Drew",
     lastName: "Dunsire",
     email: "ddunsire1@loc.gov",
+    avatar: "https://i.pravatar.cc/200?u=ca705b06-5521-43cb-bcdf-9dbc61b4988b",
   },
   {
     _id: ObjectId("6182d60cfc13ae2f6d00020a"),
     firstName: "Genny",
     lastName: "O'Cullen",
     email: "gocullen2@illinois.edu",
+    avatar: "https://i.pravatar.cc/200?u=68ce7118-9035-4c6e-85ee-4d36c7f183b1",
   },
   {
     _id: ObjectId("6182d60cfc13ae2f6d00020b"),
-    firstName: "Reggi",
+    firstName: "Denver",
     lastName: "Studholme",
     email: "rstudholme3@nasa.gov",
+    avatar: "https://i.pravatar.cc/200?u=361efaf8-ad38-4ecc-892a-79c77a6d1401",
   },
   {
     _id: ObjectId("6182d60cfc13ae2f6d00020c"),
-    firstName: "Lizette",
+    firstName: "Vale",
     lastName: "Marchington",
     email: "lmarchington4@bbb.org",
+    avatar: "https://i.pravatar.cc/200?u=fcf9b6d6-c05e-42e3-84ae-9a51f8bff318",
   },
 ];
 

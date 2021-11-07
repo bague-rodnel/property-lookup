@@ -1,103 +1,169 @@
 import { useQuery } from "@apollo/client";
 import { useState, useEffect, useRef } from "react";
 import { searchQuery } from "../queries/queries";
-import { Container } from "react-bootstrap";
+import { Container, Form, InputGroup, Button } from "react-bootstrap";
 import PropertyList from "../components/PropertyList";
 import UserList from "../components/UserList";
 import Tabs from "../components/Tabs";
 import { SearchStyled } from "../components/styles/Search.styled";
-import Autocomplete from "react-google-autocomplete";
+import Autocomplete, { usePlacesWidget } from "react-google-autocomplete";
 
 const Search = () => {
-  const [keyword, setKeyword] = useState("");
-  const [zip, setZip] = useState("");
-  const [inputVal, setInputVal] = useState("");
+  const [filters, setFilters] = useState({});
+  const [prevInputText, setPrevInputText] = useState("");
   const { loading, error, data } = useQuery(searchQuery, {
-    variables: { keyword: keyword, zip: zip },
+    variables: { filters },
   });
   // const { loading, error, data } = useQuery(searchQuery);
 
-  console.log({ keyword, zip });
+  const { ref } = usePlacesWidget({
+    apiKey: process.env.REACT_APP_MAPS_API_KEY,
+    onPlaceSelected: (place) => handleSubmit(null, place),
+    options: {
+      types: ["(regions)"],
+      componentRestrictions: { country: "us" },
+    },
+  });
+
   if (!loading) {
     console.log(data);
   }
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
+  const handleSubmit = (e, place) => {
+    if (e) {
+      e.preventDefault();
+    }
 
-    // the requirement mentioned doing the search at the click of the button not on change of the input value
-    setKeyword(inputVal);
-  };
+    if (place) {
+      setFilters(breakdownPlace(place));
+    } else {
+      if (prevInputText !== ref.current.value) {
+        setFilters(breakdownPlace({ name: ref.current.value }));
+      }
+    }
 
-  const isValidUSZip = (zip_code) => {
-    return /^\d{5}(-\d{4})?$/.test(zip_code);
+    setPrevInputText(ref.current.value);
   };
 
   return (
     <SearchStyled>
       <Container>
-        <form onSubmit={handleSubmit}>
-          <input
-            type="text"
-            value={inputVal}
-            onChange={(e) => setInputVal(e.target.value)}
-          />
-          <input type="submit" value="Search" />
-          <Autocomplete
-            apiKey={process.env.REACT_APP_MAPS_API_KEY}
-            placeholder="Enter a location"
-            onPlaceSelected={(place) => {
-              setKeyword("");
-              setZip("");
-              console.log(place);
-              if (place.name) {
-                // try parse if zipcode
-                if (isValidUSZip(place.name)) {
-                  setZip(place.name);
-                  console.log("us zip code found");
-                } else {
-                  setKeyword(place.name);
-                  // handle as a keyword search on street
-                  // or name of user
-                }
-              } else if (place.address_components) {
-                const zip_component = place.address_components.find(
-                  (component) => component.types.includes("postal_code")
-                );
-
-                const zip_string = zip_component && zip_component.short_name;
-
-                if (zip_string) {
-                  // at this point the city and state will also match the addresses in the mock as they are valid us addresses so we only match zip codes in query
-                  setZip(zip_string);
-                } else {
-                  setZip("");
-                }
-              } else {
-                // unknown input entry
-              }
-            }}
-            options={{
-              types: ["(regions)"],
-              componentRestrictions: { country: "us" },
-            }}
-          />
-        </form>
+        <Form onSubmit={handleSubmit}>
+          <InputGroup>
+            <input
+              ref={ref}
+              className="searchBox"
+              placeholder="Enter a place"
+            />
+            <Button type="submit">Search</Button>
+          </InputGroup>
+        </Form>
         <div className="search-results">
           {loading ? (
             <p>...loading</p>
           ) : (
-            <>
-              <Tabs>
-                <PropertyList id="properties" data={data.search.Properties} />
-                <UserList id="users" data={data.search.Users} />
-              </Tabs>
-            </>
+            data.search &&
+            (data.search.users.length > 0 ||
+              data.search.properties.length > 0) && (
+              <>
+                {data.search.properties.length > 0 && (
+                  <>
+                    <Container className="best-match-header">
+                      <img className="logo" src="images/home.png" />
+                      <h2>BEST MATCHES</h2>
+                    </Container>
+                    <PropertyList data={data.search.properties} />
+                  </>
+                )}
+                {data.search.users.map((user) => {
+                  const { id, firstName, lastName, avatar } = user;
+                  return (
+                    <>
+                      <Container key={id}>
+                        <div className="user-card">
+                          <img className="avatar" src={avatar} />
+                          <div className="info">
+                            <div className="header">
+                              <h2 className="fullname">
+                                {(firstName + " " + lastName).toUpperCase()}
+                              </h2>
+                              <a href="#" className="follow">
+                                Follow
+                              </a>
+                            </div>
+                            <p>Owned properties -{user.properties.length}</p>
+                          </div>
+                        </div>
+                      </Container>
+                      <PropertyList data={user.properties} />
+                    </>
+                  );
+                })}
+              </>
+            )
           )}
         </div>
       </Container>
     </SearchStyled>
   );
 };
+
+function isValidUSZip(zip_code) {
+  return /^\d{5}(-\d{4})?$/.test(zip_code);
+}
+
+function isValidUSState(state_code) {
+  return /^(([Aa][EeLlKkSsZzRr])|([Cc][AaOoTt])|([Dd][EeCc])|([Ff][MmLl])|([Gg][AaUu])|([Hh][Ii])|([Ii][DdLlNnAa])|([Kk][SsYy])|([Ll][Aa])|([Mm][EeHhDdAaIiNnSsOoTt])|([Nn][EeVvHhJjMmYyCcDd])|([Mm][Pp])|([Oo][HhKkRr])|([Pp][WwAaRr])|([Rr][Ii])|([Ss][CcDd])|([Tt][NnXx])|([Uu][Tt])|([Vv][TtIiAa])|([Ww][AaVvIiYy]))$/.test(
+    state_code
+  );
+}
+
+function breakdownPlace(place) {
+  let breakdown = { name: "", city: "", state: "", zip: "" };
+
+  console.log(place);
+  if (place.name) {
+    // try parse if zipcode
+    if (isValidUSZip(place.name)) {
+      breakdown.zip = place.name;
+    } else if (isValidUSState(place.name)) {
+      breakdown.state = place.name.toUpperCase();
+    } else {
+      breakdown.name = place.name;
+      // handle as a keyword search on street
+      // or name of user
+    }
+  } else if (place.address_components) {
+    const zip_component = place.address_components.find((component) =>
+      component.types.includes("postal_code")
+    );
+    const city_component = place.address_components.find((component) =>
+      component.types.includes("locality")
+    );
+    const state_component = place.address_components.find((component) =>
+      component.types.includes("administrative_area_level_1")
+    );
+
+    const zip = zip_component && zip_component.short_name;
+    const city = city_component && city_component.short_name;
+    const state = state_component && state_component.short_name;
+
+    if (zip) {
+      breakdown = { ...breakdown, zip };
+    }
+
+    if (city) {
+      breakdown = { ...breakdown, city };
+    }
+
+    if (state) {
+      breakdown = { ...breakdown, state };
+    }
+  } else {
+    return null;
+  }
+
+  return breakdown;
+}
 
 export default Search;

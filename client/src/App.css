@@ -1,3 +1,9 @@
+:root {
+  --text-dark: rgb(34, 34, 34);
+  --text-light: rgb(151, 151, 151);
+  --color-theme: #ff7000;
+}
+
 li {
   list-style-type: none;
 }

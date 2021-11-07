@@ -5,20 +5,24 @@ export const PropertyListStyled = styled.div`
     border: none;
     cursor: pointer;
 
+    .property-image {
+      border-radius: 0.66rem;
+    }
+
     .card-body {
       padding-left: 0;
       padding-right: 0;
     }
 
     .card-text {
-      color: #222222;
+      color: var(--text-dark);
       font-size: 1.2rem;
       font-weight: 500;
       margin-bottom: 0.5rem;
     }
 
     .address {
-      color: #666;
+      color: var(--text-light);
       overflow: hidden;
       white-space: nowrap;
       text-overflow: ellipsis;

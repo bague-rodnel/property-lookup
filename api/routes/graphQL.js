@@ -13,6 +13,7 @@ let typeDefs = gql`
     firstName: String
     lastName: String
     email: String
+    avatar: String
     properties: [PropertyType]
   }
 
@@ -32,40 +33,56 @@ let typeDefs = gql`
     properties: [PropertyType]
   }
 
+  input FiltersInput {
+    name: String
+    city: String
+    state: String
+    zip: String
+  }
+
   type Query {
-    search(keyword: String = "", zip: String = ""): SearchType
+    search(filters: FiltersInput): SearchType
   }
 `;
 
 let resolvers = {
   Query: {
-    search: async (root, { keyword, zip }) => {
+    search: async (root, { filters }) => {
       let result = { users: [], properties: [] };
 
-      result.users = await User.find({});
-      result.properties = await Property.find({}).populate("user");
-      return result;
+      const { zip, city, state, name } = filters;
 
       if (zip) {
-        result.Properties = await Property.find({ zip: zip });
-      }
-
-      if (keyword) {
-        result.Users = await User.find({
-          $or: [{ firstName: keyword }, { lastName: keyword }],
+        result.properties = await Property.find({ zip: zip }).populate("user");
+      } else if (city && state) {
+        result.properties = await Property.find({
+          city,
+          state,
+        }).populate("user");
+      } else if (state) {
+        result.properties = await Property.find({
+          state,
+        });
+      } else if (name) {
+        const regex = new RegExp("^" + name + "$", "i");
+        result.users = await User.find({
+          $or: [
+            { firstName: { $regex: regex } },
+            { lastName: { $regex: regex } },
+          ],
         });
 
-        result.Properties = await Property.find({
-          street: { $regex: keyword, $options: "i" },
-        });
+        result.properties = await Property.find({
+          street: { $regex: name, $options: "i" },
+        }).populate("user");
+      } else {
+        // unknown
       }
       return result;
     },
   },
   UserType: {
     properties: async (user) => {
-      // console.log("testing user.id: " + user._id);
-      console.log("typeof user.id: " + typeof user._id);
       return await Property.find({ user: user.id });
     },
   },

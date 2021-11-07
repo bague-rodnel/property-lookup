@@ -1,6 +1,4 @@
-import { useQuery } from "@apollo/client";
-import { getPropertiesQuery } from "../queries/queries";
-import { Card, Button, Container, Row, Col } from "react-bootstrap";
+import { Card, Button, Container, Row, Col, Img } from "react-bootstrap";
 import { IoMdPin } from "react-icons/io";
 
 import { PropertyListStyled } from "./styles/PropertyList.styled";
@@ -11,7 +9,6 @@ const PropertyList = ({ data }) => {
       <Container>
         <Row>
           {data.map((property) => {
-            console.log(property);
             const { id, street, city, state, zip, rent, photo } = property;
             return (
               <Col
@@ -23,9 +20,11 @@ const PropertyList = ({ data }) => {
                 style={{ marginBottom: "2rem" }}
               >
                 <Card>
-                  <Card.Img variant="top" src={photo} />
+                  <Card.Img className="property-image" src={photo} />
                   <Card.Body>
-                    <Card.Text>${rent.toLocaleString("en-US")}</Card.Text>
+                    <Card.Text className="price">
+                      ${rent.toLocaleString("en-US")}
+                    </Card.Text>
                     <div
                       className="address"
                       title={`${street}, ${city}, ${state}, ${zip}`}
