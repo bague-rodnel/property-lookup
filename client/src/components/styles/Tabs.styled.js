@@ -1,49 +1,33 @@
 import styled from "styled-components";
 
 export const TabsStyled = styled.div`
-  .tab-list {
-    border-bottom: 1px solid #ff7201;
-    padding-left: 0;
-  }
+  .react-tabs__tab {
+    border: none;
 
-  .tab-list-item {
-    list-style: none;
-    margin-bottom: -1px;
-    padding: 0.5rem 0.75rem;
-    cursor: pointer;
-    ${"" /* background: #e9ebec; */}
-    color: #666;
-    border-bottom: 1px solid #ff7201;
+    &::after {
+      position: absolute;
+      content: "";
+      width: 100%;
+      height: 3px;
+      bottom: 100%;
+      left: 0;
+      background: var(--color-theme);
+      transition: transform 0.3s;
+      transform: scaleX(0);
+      transform-origin: center;
+    }
 
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: 0.25rem;
-  }
+    &:focus {
+      box-shadow: none;
+      border-color: var(--color-theme);
+    }
 
-  .tab-list-active {
-    border: solid #ff7201;
-    border-width: 1px 1px 0 1px;
-    border-bottom: 1px solid transparent;
-    background: white;
-    color: #333333;
-  }
+    &.react-tabs__tab--selected .heading {
+      color: var(--text-dark);
+    }
 
-  .tab-list-item .tab-list__pill {
-    background-color: #a8a8a8;
-
-    color: white;
-    font-size: 0.6rem;
-    border-radius: 50%;
-    width: 1.5rem;
-    height: 1.5rem;
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-
-  .tab-list__pill.pill-active {
-    background-color: #ff7201;
+    &.react-tabs__tab--selected::after {
+      transform: scaleX(1);
+    }
   }
 `;

@@ -1,12 +1,12 @@
 import { useQuery } from "@apollo/client";
-import { useState, useEffect, useRef } from "react";
+import { useState } from "react";
 import { searchQuery } from "../queries/queries";
 import { Container, Form, InputGroup, Button } from "react-bootstrap";
+import { BsSearch } from "react-icons/bs";
 import PropertyList from "../components/PropertyList";
-import UserList from "../components/UserList";
-import Tabs from "../components/Tabs";
 import { SearchStyled } from "../components/styles/Search.styled";
-import Autocomplete, { usePlacesWidget } from "react-google-autocomplete";
+import { usePlacesWidget } from "react-google-autocomplete";
+import SpinningCircle from "../components/SpinningCircle";
 
 const Search = () => {
   const [filters, setFilters] = useState({});
@@ -14,7 +14,6 @@ const Search = () => {
   const { loading, error, data } = useQuery(searchQuery, {
     variables: { filters },
   });
-  // const { loading, error, data } = useQuery(searchQuery);
 
   const { ref } = usePlacesWidget({
     apiKey: process.env.REACT_APP_MAPS_API_KEY,
@@ -25,16 +24,13 @@ const Search = () => {
     },
   });
 
-  if (!loading) {
-    console.log(data);
-  }
-
   const handleSubmit = (e, place) => {
     if (e) {
       e.preventDefault();
     }
 
     if (place) {
+      console.log(place);
       setFilters(breakdownPlace(place));
     } else {
       if (prevInputText !== ref.current.value) {
@@ -44,6 +40,8 @@ const Search = () => {
 
     setPrevInputText(ref.current.value);
   };
+
+  console.log(data);
 
   return (
     <SearchStyled>
@@ -55,52 +53,62 @@ const Search = () => {
               className="searchBox"
               placeholder="Enter a place"
             />
-            <Button type="submit">Search</Button>
+            <Button type="submit">
+              <BsSearch />
+              <span className="d-none d-sm-inline">Search</span>
+            </Button>
           </InputGroup>
         </Form>
         <div className="search-results">
           {loading ? (
-            <p>...loading</p>
-          ) : (
-            data.search &&
+            <SpinningCircle />
+          ) : data.search &&
             (data.search.users.length > 0 ||
-              data.search.properties.length > 0) && (
-              <>
-                {data.search.properties.length > 0 && (
+              data.search.properties.length > 0) ? (
+            <>
+              {data.search.properties.length > 0 && (
+                <>
+                  <Container className="best-match-header">
+                    <img className="logo" src="images/home-vector.png" />
+                    <h2>BEST MATCHES</h2>
+                  </Container>
+                  <PropertyList data={data.search.properties} />
+                </>
+              )}
+              {data.search.users.map((user) => {
+                const { id, firstName, lastName, avatar } = user;
+                console.log("id: " + id);
+                return (
                   <>
-                    <Container className="best-match-header">
-                      <img className="logo" src="images/home.png" />
-                      <h2>BEST MATCHES</h2>
-                    </Container>
-                    <PropertyList data={data.search.properties} />
-                  </>
-                )}
-                {data.search.users.map((user) => {
-                  const { id, firstName, lastName, avatar } = user;
-                  return (
-                    <>
-                      <Container key={id}>
-                        <div className="user-card">
-                          <img className="avatar" src={avatar} />
-                          <div className="info">
-                            <div className="header">
-                              <h2 className="fullname">
-                                {(firstName + " " + lastName).toUpperCase()}
-                              </h2>
-                              <a href="#" className="follow">
-                                Follow
-                              </a>
-                            </div>
-                            <p>Owned properties -{user.properties.length}</p>
+                    <Container key={id}>
+                      <div className="user-card">
+                        <img className="avatar" src={avatar} />
+                        <div className="info">
+                          <div className="header">
+                            <h2 className="fullname">
+                              {(firstName + " " + lastName).toUpperCase()}
+                            </h2>
+                            <a href="#" className="follow">
+                              Follow
+                            </a>
                           </div>
+                          <p>Owned properties - {user.properties.length}</p>
                         </div>
-                      </Container>
-                      <PropertyList data={user.properties} />
-                    </>
-                  );
-                })}
-              </>
-            )
+                      </div>
+                    </Container>
+                    <PropertyList data={user.properties} />
+                  </>
+                );
+              })}
+            </>
+          ) : (
+            <>
+              {prevInputText && (
+                <p className="no-matches-msg">
+                  No property matched your search. Try a different search.
+                </p>
+              )}
+            </>
           )}
         </div>
       </Container>

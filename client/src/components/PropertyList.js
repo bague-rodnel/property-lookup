@@ -1,6 +1,5 @@
 import { Card, Button, Container, Row, Col, Img } from "react-bootstrap";
 import { IoMdPin } from "react-icons/io";
-
 import { PropertyListStyled } from "./styles/PropertyList.styled";
 
 const PropertyList = ({ data }) => {
@@ -19,21 +18,23 @@ const PropertyList = ({ data }) => {
                 key={id}
                 style={{ marginBottom: "2rem" }}
               >
-                <Card>
-                  <Card.Img className="property-image" src={photo} />
-                  <Card.Body>
-                    <Card.Text className="price">
-                      ${rent.toLocaleString("en-US")}
-                    </Card.Text>
-                    <div
-                      className="address"
-                      title={`${street}, ${city}, ${state}, ${zip}`}
-                    >
-                      <IoMdPin className="address-pin" />
-                      {`${street}, ${city}, ${state}, ${zip}`}
-                    </div>
-                  </Card.Body>
-                </Card>
+                <a href={`/properties/${id}`} target="_blank">
+                  <Card>
+                    <Card.Img className="property-image" src={photo} />
+                    <Card.Body>
+                      <Card.Text className="price">
+                        ${rent.toLocaleString("en-US")}
+                      </Card.Text>
+                      <div
+                        className="address"
+                        title={`${street}, ${city}, ${state}, ${zip}`}
+                      >
+                        <IoMdPin className="address-pin" />
+                        {`${street}, ${city}, ${state}, ${zip}`}
+                      </div>
+                    </Card.Body>
+                  </Card>
+                </a>
               </Col>
             );
           })}

@@ -6,7 +6,7 @@ export const PropertyListStyled = styled.div`
     cursor: pointer;
 
     .property-image {
-      border-radius: 0.66rem;
+      border-radius: 0;
     }
 
     .card-body {
@@ -29,7 +29,7 @@ export const PropertyListStyled = styled.div`
     }
 
     .address-pin {
-      color: #ff7300;
+      color: var(--color-theme);
     }
 
     &::after {
@@ -39,7 +39,7 @@ export const PropertyListStyled = styled.div`
       height: 3px;
       top: 100%;
       left: 0;
-      background: #ff7000;
+      background: var(--color-theme);
       transition: transform 0.5s;
       transform: scaleX(0);
       transform-origin: center;

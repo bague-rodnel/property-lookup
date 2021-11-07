@@ -1,9 +1,37 @@
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
 :root {
   --text-dark: rgb(34, 34, 34);
   --text-light: rgb(151, 151, 151);
-  --color-theme: #ff7000;
+  --color-theme: #ff7300;
+  --font-family-main: "Mukta", sans-serif;
+  --font-family-numbers: "Zilla Slab", serif;
+
+  font-family: var(--font-family-main);
 }
 
-li {
+body {
+  min-height: 100vh;
+}
+
+ul {
   list-style-type: none;
+}
+
+a {
+  text-decoration: none;
+}
+
+img {
+  height: auto;
+  width: 100%;
+  vertical-align: middle;
+}
+
+.row > * {
+  margin-top: 1rem;
 }

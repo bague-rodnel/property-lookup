@@ -22,6 +22,7 @@ const searchQuery = gql`
         email
         avatar
         properties {
+          id
           street
           city
           state
@@ -34,4 +35,17 @@ const searchQuery = gql`
   }
 `;
 
-export { searchQuery };
+const getPropertyQuery = gql`
+  query ($id: String) {
+    property(id: $id) {
+      street
+      city
+      state
+      zip
+      rent
+      photo
+    }
+  }
+`;
+
+export { searchQuery, getPropertyQuery };

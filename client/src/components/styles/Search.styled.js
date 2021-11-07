@@ -2,45 +2,53 @@ import styled from "styled-components";
 
 export const SearchStyled = styled.div`
   form {
-    margin: 1.6rem 0 3rem;
+    width: 90%;
+    max-width: 620px;
+    margin: 1.6rem auto 3rem;
+
+    .input-group {
+      display: flex;
+    }
+
+    .searchBox {
+      flex: 1;
+
+      border-width: 1px 0 0 1px;
+      border-color: white;
+      border-top-left-radius: 0.25rem;
+      border-bottom-left-radius: 0.25rem;
+      padding-left: 0.5rem;
+
+      &:active,
+      &:focus {
+        border: 1px solid var(--color-theme);
+        outline: none;
+      }
+    }
+
+    .btn-primary {
+      background: var(--color-theme);
+      outline: none;
+      border: 1px solid var(--color-theme);
+
+      display: flex;
+      gap: 0.2rem;
+      align-items: center;
+
+      &:active,
+      &:focus {
+        outline: none;
+        box-shadow: none;
+      }
+
+      &:active {
+        transform: scale(0.98);
+      }
+    }
   }
 
-  .input-group {
-    width: clamp(240px, 66vw, 480px);
-    margin: 0 auto;
-    display: flex;
-  }
-
-  .searchBox {
-    flex: 1;
-
-    border-width: 1px 0 0 1px;
-    border-color: white;
-    border-top-left-radius: 0.25rem;
-    border-bottom-left-radius: 0.25rem;
-    padding-left: 0.5rem;
-  }
-
-  .searchBox:active,
-  .searchBox:focus {
-    border: 1px solid var(--color-theme);
-    outline: none;
-  }
-
-  .btn-primary {
-    background: var(--color-theme);
-    outline: none;
-    border: 1px solid var(--color-theme);
-  }
-
-  .btn-primary:active,
-  .btn-primary:focus {
-    outline: none;
-    box-shadow: none;
-  }
-
-  .btn-primary:active {
-    transform: scale(0.98);
+  .search-results {
+    min-height: 100vh;
   }
 
   .best-match-header {
@@ -95,5 +103,12 @@ export const SearchStyled = styled.div`
         margin-bottom: 0;
       }
     }
+  }
+
+  .no-matches-msg {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translateX(-50%);
   }
 `;
