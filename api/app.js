@@ -5,7 +5,6 @@ const path = require("path");
 const { ApolloServer } = require("apollo-server-express");
 const cors = require("cors");
 const mongoose = require("mongoose");
-const createError = require("http-errors");
 const { typeDefs, resolvers } = require("./graphql/graphql");
 
 const publicPath = path.join(__dirname, "..", "build");
@@ -23,9 +22,6 @@ require("dotenv").config();
   app.set("views", path.join(__dirname, "views"));
   app.set("view engine", "jade");
 
-  app.use(cors());
-  app.use(express.json());
-  app.use(express.urlencoded({ extended: false }));
   app.use(express.static(publicPath));
 
   const server = new ApolloServer({

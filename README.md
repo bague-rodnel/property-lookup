@@ -2,6 +2,10 @@
 
 This project was bootstrapped with [Create React App (CRA)](https://github.com/facebook/create-react-app) for the frontend and with `express-generator` for the backend.
 
+[Live view](https://property-lookup.herokuapp.com/)
+
+**Note:** Heroku will turn off the app after 30 mins of inactivity. You may get an initial error message of `Cannot GET /` at first load. Just reload the page.
+
 ## Table of Contents
 
 - [Overview](#overview)
@@ -136,7 +140,7 @@ From the address_components the frontend composes an object
 
 which gets passed to the backend as a set of filters.
 
-## Local Deployment
+### Local Deployment
 
 After cloning the repo run:
 
@@ -144,7 +148,7 @@ After cloning the repo run:
 
 in the root folder.
 
-### Environment Setup
+#### Setting up the Environment
 
 Create a .env file with the following variables:
 
@@ -153,15 +157,18 @@ REACT_APP_MAPS_API_KEY=
 MONGODB=
 ```
 
-### Available Scripts
-
-In the project directory, you can run:
-
-### `npm start`
-
-Runs the backend server: `node api/bin/www`, which in turns serves the react app.
-
-### `npm run build`
+#### `npm run build`
 
 Builds the app for production to the `build` folder.\
-The express server serves the build version. Run the build script after making changes to the react app.
+The express server serves the build version.\
+Run the build script after cloning and/or after making changes to the react app.
+
+#### `npm start`
+
+In the project folder run this command.\
+This runs the backend server: `node api/bin/www`, which in turns serves the react app.\
+Open [http://localhost:9000](http://localhost:9000) to view it in the browser.
+
+### What I learned
+
+This is my first time using GraphQL. It doesn't stand out much in this small example but yes it is powerful in that queries can be tailored to receiving or sending only enough data as needed. In some cases this also translates to less queries than its RESTful counterpart.
