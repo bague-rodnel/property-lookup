@@ -154,6 +154,7 @@ Create a .env file with the following variables:
 ```
 REACT_APP_MAPS_API_KEY=
 MONGODB=
+REACT_APP_MAPBOX_TOKEN=
 ```
 
 #### `npm run build`
