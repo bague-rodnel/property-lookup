@@ -11,7 +11,7 @@ import SpinningCircle from "../components/SpinningCircle";
 const Search = () => {
   const [filters, setFilters] = useState({});
   const [prevInputText, setPrevInputText] = useState("");
-  const { loading, error, data } = useQuery(searchQuery, {
+  const { loading, data } = useQuery(searchQuery, {
     variables: { filters },
   });
 
@@ -69,7 +69,7 @@ const Search = () => {
               {data.search.properties.length > 0 && (
                 <>
                   <Container className="best-match-header">
-                    <img className="logo" src="images/home-vector.png" />
+                    <img className="logo" src="images/home-vector.png" alt="" />
                     <h2>BEST MATCHES</h2>
                   </Container>
                   <PropertyList data={data.search.properties} />
@@ -82,7 +82,11 @@ const Search = () => {
                   <>
                     <Container key={id}>
                       <div className="user-card">
-                        <img className="avatar" src={avatar} />
+                        <img
+                          className="avatar"
+                          src={avatar}
+                          alt={`${firstName}, ${lastName}`}
+                        />
                         <div className="info">
                           <div className="header">
                             <h2 className="fullname">

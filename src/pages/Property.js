@@ -14,7 +14,7 @@ import "react-tabs/style/react-tabs.css";
 
 const Property = () => {
   const { id } = useParams();
-  const { loading, error, data } = useQuery(getPropertyQuery, {
+  const { loading, data } = useQuery(getPropertyQuery, {
     variables: { id: id },
   });
 

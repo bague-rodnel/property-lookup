@@ -3,7 +3,6 @@ const { gql } = require("apollo-server-express");
 const User = require("../models/User");
 const Property = require("../models/Property");
 const mongoose = require("mongoose");
-const { ObjectId } = require("mongodb");
 
 // const { users, properties } = require("../data");
 
@@ -54,29 +53,37 @@ let resolvers = {
       const { zip, city, state, name } = filters;
 
       if (zip) {
-        result.properties = await Property.find({ zip: zip }).populate("user");
+        result.properties =
+          (await Property.find({ zip: zip }).populate("user")) || [];
       } else if (city && state) {
-        result.properties = await Property.find({
-          city,
-          state,
-        }).populate("user");
+        result.properties =
+          (await Property.find({
+            city,
+            state,
+          }).populate("user")) || [];
       } else if (state) {
-        result.properties = await Property.find({
-          state,
-        });
+        result.properties =
+          (await Property.find({
+            state,
+          })) || [];
       } else if (name) {
         const keyword = name.trim().replace(/^0+/, "").split(",")[0];
         const regex = new RegExp("^" + keyword + "$", "i");
-        result.users = await User.find({
-          $or: [
-            { firstName: { $regex: regex } },
-            { lastName: { $regex: regex } },
-          ],
-        });
 
-        result.properties = await Property.find({
-          street: { $regex: keyword, $options: "i" },
-        }).populate("user");
+        if (keyword.length < 2) return { users: [], properties: [] };
+
+        result.users =
+          (await User.find({
+            $or: [
+              { firstName: { $regex: regex } },
+              { lastName: { $regex: regex } },
+            ],
+          })) || [];
+
+        result.properties =
+          (await Property.find({
+            street: { $regex: keyword, $options: "i" },
+          }).populate("user")) || [];
       } else {
         // unknown
       }

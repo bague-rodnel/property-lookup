@@ -1,4 +1,4 @@
-import { Card, Button, Container, Row, Col, Img } from "react-bootstrap";
+import { Card, Container, Row, Col } from "react-bootstrap";
 import { IoMdPin } from "react-icons/io";
 import { PropertyListStyled } from "./styles/PropertyList.styled";
 
@@ -18,7 +18,7 @@ const PropertyList = ({ data }) => {
                 key={id}
                 style={{ marginBottom: "2rem" }}
               >
-                <a href={`/properties/${id}`} target="_blank">
+                <a href={`/properties/${id}`} target="_blank" rel="noreferrer">
                   <Card>
                     <Card.Img className="property-image" src={photo} />
                     <Card.Body>
