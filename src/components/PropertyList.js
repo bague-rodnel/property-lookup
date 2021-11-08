@@ -30,7 +30,7 @@ const PropertyList = ({ data }) => {
                         title={`${street}, ${city}, ${state}, ${zip}`}
                       >
                         <IoMdPin className="address-pin" />
-                        {`${street}, ${city}, ${state}, ${zip}`}
+                        {`${street}, ${city}, ${state} ${zip}`}
                       </div>
                     </Card.Body>
                   </Card>

@@ -65,7 +65,8 @@ let resolvers = {
           state,
         });
       } else if (name) {
-        const regex = new RegExp("^" + name + "$", "i");
+        const keyword = name.trim().replace(/^0+/, "").split(",")[0];
+        const regex = new RegExp("^" + keyword + "$", "i");
         result.users = await User.find({
           $or: [
             { firstName: { $regex: regex } },
@@ -74,7 +75,7 @@ let resolvers = {
         });
 
         result.properties = await Property.find({
-          street: { $regex: name, $options: "i" },
+          street: { $regex: keyword, $options: "i" },
         }).populate("user");
       } else {
         // unknown

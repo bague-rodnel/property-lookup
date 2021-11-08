@@ -19,7 +19,7 @@ const Search = () => {
     apiKey: process.env.REACT_APP_MAPS_API_KEY,
     onPlaceSelected: (place) => handleSubmit(null, place),
     options: {
-      types: ["(regions)"],
+      types: ["address"],
       componentRestrictions: { country: "us" },
     },
   });
