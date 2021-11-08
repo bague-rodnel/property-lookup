@@ -1,4 +1,4 @@
-# Home Lookup App
+# Property Lookup App
 
 This project was bootstrapped with [Create React App (CRA)](https://github.com/facebook/create-react-app) for the frontend and with `express-generator` for the backend.
 
@@ -16,7 +16,6 @@ This project was bootstrapped with [Create React App (CRA)](https://github.com/f
   - [Frontend](#frontend)
   - [Local Deployment](#local-deployment)
   - [What I learned](#what-i-learned)
-- [Author](#author)
 
 ## Overview
 
