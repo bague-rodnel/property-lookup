@@ -96,7 +96,7 @@ let resolvers = {
   },
   UserType: {
     properties: async (user) => {
-      return await Property.find({ user: user.id });
+      return (await Property.find({ user: user.id })) || [];
     },
   },
 };
