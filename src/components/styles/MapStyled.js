@@ -10,8 +10,8 @@ export const MapStyled = styled.div`
     transform: translate(${-size / 2}px,${-size}px)}}
 
     p {
-      position: absolute;
-      top: 100%;
+      position: relative;
+      left: -50%;
       font-weight: 500;
     }
   }
