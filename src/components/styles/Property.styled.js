@@ -11,6 +11,10 @@ export const PropertyStyled = styled.div`
     margin-bottom: 0.5rem;
   }
 
+  .map-container {
+    margin-top: 2rem;
+  }
+
   .tablist {
     margin-bottom: 0;
 

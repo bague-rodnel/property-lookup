@@ -8,6 +8,7 @@ import { GiPalmTree, GiHouse } from "react-icons/gi";
 import { GoChecklist } from "react-icons/go";
 import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
 import SpinningCircle from "../components/SpinningCircle";
+import Map from "../components/Map";
 
 import "react-tabs/style/react-tabs.css";
 
@@ -161,6 +162,10 @@ const Property = () => {
           </Col>
         </Row>
       </Container>
+
+      <div className="map-container">
+        <Map property={data.property} />
+      </div>
     </PropertyStyled>
   );
 };

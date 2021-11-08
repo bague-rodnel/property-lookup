@@ -239,6 +239,17 @@ const properties = [
     photo: "https://picsum.photos/seed/2g94eM1c/600/400",
     user: ObjectId("6182d60cfc13ae2f6d00020b"),
   },
+  {
+    _id: ObjectId("6184d1f3fc13ae6df8000488"),
+    street: "20 W 34th St",
+    city: "New York",
+    state: "NY",
+    zip: "10001",
+    rent: 9100,
+    photo:
+      "https://cdn.travelpulse.com/images/99999999-9999-9999-9999-999999999999/57eac2f1-c8cf-08cc-943c-e1ef510c7915/600x400.jpg",
+    user: ObjectId("6182d60cfc13ae2f6d00020b"),
+  },
 ];
 
 const users = [
