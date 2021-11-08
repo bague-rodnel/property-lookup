@@ -7,6 +7,7 @@ import { TabsStyled } from "../components/styles/Tabs.styled";
 import { GiPalmTree, GiHouse } from "react-icons/gi";
 import { GoChecklist } from "react-icons/go";
 import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
+import SpinningCircle from "../components/SpinningCircle";
 
 import "react-tabs/style/react-tabs.css";
 
@@ -17,7 +18,7 @@ const Property = () => {
   });
 
   if (loading) {
-    return <p>...loading</p>;
+    return <SpinningCircle />;
   }
 
   if (!data) {
