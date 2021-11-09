@@ -67,6 +67,32 @@ Build a single page app which will show a text input and a submit button. Once t
 
 For this project I'm using MongoDB Atlas with [this mock data](./api/data.js)
 
+**Note**: These are random addresses and they don't necessarily resolve to an exact address match in the US.
+
+Geocoding will still provide a best match for these addresses by zip. Compare the next two screenshots.
+
+```javascript
+    _id: ObjectId("6184d1f3fc13ae6df8000479"),
+    street: "84449 Meadow Vale Plaza",
+    city: "Shreveport",
+    state: "LA",
+    zip: "71105",
+```
+
+![](./public/images/non-exact-match.jpg)
+_Best match by zip code for fake address_
+
+```javascript
+    _id: ObjectId("6184d1f3fc13ae6df8000488"),
+    street: "20 W 34th St",
+    city: "New York",
+    state: "NY",
+    zip: "10001",
+```
+
+![](./public/images/empire-state-match.jpg)
+_Exact match for legit address_
+
 `Models`
 
 Appropriate schemas for the User and Property models have been defined with Mongoose:

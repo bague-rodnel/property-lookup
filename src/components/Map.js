@@ -101,9 +101,9 @@ const Map = ({ property }) => {
         <Geocoder
           mapRef={mapRef}
           containerRef={geocoderContainerRef}
+          marker={true}
           inputValue={formatted_address}
           onViewportChange={handleGeocoderViewportChange}
-          marker={true}
           mapboxApiAccessToken={process.env.REACT_APP_MAPBOX_TOKEN}
           position="top-left"
         />
