@@ -51,6 +51,7 @@ let resolvers = {
       let result = { users: [], properties: [] };
 
       const { zip, city, state, name } = filters;
+      console.log(filters);
 
       if (zip) {
         result.properties =
@@ -67,11 +68,15 @@ let resolvers = {
             state,
           })) || [];
       } else if (name) {
-        const keyword = name.trim().replace(/^0+/, "").split(",")[0];
+        const keyword = sanitizeName(name);
+
+        console.log("'" + keyword + "'");
+        if (keyword.length < 2) {
+          return { users: [], properties: [] };
+        }
+
         const regex = new RegExp("^" + keyword + "$", "i");
-
-        if (keyword.length < 2) return { users: [], properties: [] };
-
+        console.log(regex);
         result.users =
           (await User.find({
             $or: [
@@ -87,6 +92,7 @@ let resolvers = {
       } else {
         // unknown
       }
+
       return result;
     },
 
@@ -100,5 +106,23 @@ let resolvers = {
     },
   },
 };
+
+function sanitizeName(name) {
+  const keyword = name
+    .split(",")[0] // first chunk before comma
+    .replace(/[^\w ]/g, "") // remove non alpha numeric, keep spaces
+    .trim() // remove leading and trailing spaces
+    .replace(/  +/g, " ") // reduce spaces to one
+    .replace(/(\d)\s+(?=\d)/g, `$1`) // remove spaces between numbers
+    .replace(/^0+/, "") // remove leading zeroes
+    .replace(/_/g, "") // remove underscores
+    .replace(/[.*+?^${}()|[\]\\]/g, "\\$&"); // escape
+
+  return keyword;
+
+  /*
+    alskdjflas hthe 0 99 8383 ... , @@  / / --- ** - 0sdfasdf ____ o0s9df sdf -- 0 // 8 *@) 0s ??
+  */
+}
 
 module.exports = { typeDefs, resolvers };

@@ -119,7 +119,6 @@ const Search = () => {
     </SearchStyled>
   );
 };
-
 function isValidUSZip(zip_code) {
   return /^\d{5}(-\d{4})?$/.test(zip_code);
 }
