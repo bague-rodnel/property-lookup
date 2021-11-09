@@ -115,14 +115,11 @@ function sanitizeName(name) {
     .replace(/  +/g, " ") // reduce spaces to one
     .replace(/(\d)\s+(?=\d)/g, `$1`) // remove spaces between numbers
     .replace(/^0+/, "") // remove leading zeroes
-    .replace(/_/g, "") // remove underscores
-    .replace(/[.*+?^${}()|[\]\\]/g, "\\$&"); // escape
+    .replace(/_/g, ""); // remove underscores
+
+  //.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"); // escape
 
   return keyword;
-
-  /*
-    alskdjflas hthe 0 99 8383 ... , @@  / / --- ** - 0sdfasdf ____ o0s9df sdf -- 0 // 8 *@) 0s ??
-  */
 }
 
 module.exports = { typeDefs, resolvers };
