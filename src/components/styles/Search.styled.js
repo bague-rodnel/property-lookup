@@ -1,53 +1,105 @@
 import styled from "styled-components";
 
 export const SearchStyled = styled.div`
-  form {
-    width: 90%;
-    max-width: 620px;
-    margin: 1.6rem auto 3rem;
+  header {
+    height: 812px;
+    max-height: 100vh;
+    background: rgb(255, 115, 1);
+    background: linear-gradient(
+        49deg,
+        rgba(255, 115, 1, 0.3) 0%,
+        rgba(255, 180, 93, 0.1) 100%
+      ),
+      url(/images/houses.png);
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    transition: height 0.5s ease-out;
 
-    .input-group {
-      display: flex;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    justify-content: center;
+
+    &.retract {
+      height: 100px;
+      background: linear-gradient(
+          49deg,
+          rgba(255, 115, 1, 0.9) 0%,
+          rgba(255, 180, 93, 0.7) 100%
+        ),
+        url(/images/houses.png);
+
+      background-size: cover;
+      background-repeat: no-repeat;
+      background-position: center;
+
+      h1 {
+        display: none;
+      }
     }
 
-    .searchBox {
-      flex: 1;
+    h1 {
+      color: white;
+      font-size: 2.5rem;
+      margin-bottom: 2rem;
 
-      border-width: 1px 0 0 1px;
-      border-color: white;
-      border-top-left-radius: 0.25rem;
-      border-bottom-left-radius: 0.25rem;
-      padding-left: 0.5rem;
+      .big-text {
+        font-size: 3.2rem;
+      }
+    }
 
-      &:active,
-      &:focus {
+    form {
+      padding-left: 10px;
+      padding-right: 10px;
+      max-width: 620px;
+      width: 100%;
+      margin: 0 auto;
+      transition: top 0.5s ease-out;
+
+      .input-group {
+        display: flex;
+      }
+
+      .search-box {
+        flex: 1;
+
+        border-width: 1px 0 0 1px;
+        border-color: white;
+        border-top-left-radius: 0.25rem;
+        border-bottom-left-radius: 0.25rem;
+        padding-left: 0.5rem;
+
+        &:active,
+        &:focus {
+          outline: none;
+        }
+      }
+
+      .btn-primary {
+        background: var(--color-theme);
+        outline: none;
         border: 1px solid var(--color-theme);
-        outline: none;
-      }
-    }
 
-    .btn-primary {
-      background: var(--color-theme);
-      outline: none;
-      border: 1px solid var(--color-theme);
+        display: flex;
+        gap: 0.2rem;
+        align-items: center;
 
-      display: flex;
-      gap: 0.2rem;
-      align-items: center;
+        &:active,
+        &:focus {
+          outline: none;
+          box-shadow: none;
+        }
 
-      &:active,
-      &:focus {
-        outline: none;
-        box-shadow: none;
-      }
-
-      &:active {
-        transform: scale(0.98);
+        &:active {
+          transform: scale(0.98);
+        }
       }
     }
   }
 
   .search-results {
+    padding-top: 2rem;
     min-height: 100vh;
   }
 

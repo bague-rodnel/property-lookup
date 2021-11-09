@@ -116,9 +116,6 @@ function sanitizeName(name) {
     .replace(/(\d)\s+(?=\d)/g, `$1`) // remove spaces between numbers
     .replace(/^0+/, "") // remove leading zeroes
     .replace(/_/g, ""); // remove underscores
-
-  //.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"); // escape
-
   return keyword;
 }
 

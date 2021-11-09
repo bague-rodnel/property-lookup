@@ -73,7 +73,7 @@ const Map = ({ property }) => {
   }, []);
 
   return (
-    <MapStyled style={{ height: "50vh", position: "relative" }}>
+    <MapStyled>
       <div
         ref={geocoderContainerRef}
         style={{ position: "absolute", top: 20, left: 20, zIndex: 1 }}

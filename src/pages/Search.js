@@ -1,5 +1,5 @@
 import { useQuery } from "@apollo/client";
-import { useState } from "react";
+import { useRef, useState, useEffect } from "react";
 import { searchQuery } from "../queries/queries";
 import { Container, Form, InputGroup, Button } from "react-bootstrap";
 import { BsSearch } from "react-icons/bs";
@@ -9,8 +9,12 @@ import { usePlacesWidget } from "react-google-autocomplete";
 import SpinningCircle from "../components/SpinningCircle";
 
 const Search = () => {
+  const [isSerene, setIsSerene] = useState(true);
+
   const [filters, setFilters] = useState({});
   const [prevInputText, setPrevInputText] = useState("");
+  const headerRef = useRef(null);
+
   const { loading, data } = useQuery(searchQuery, {
     variables: { filters },
   });
@@ -38,84 +42,101 @@ const Search = () => {
       }
     }
 
+    if (isSerene) {
+      setIsSerene(false);
+    }
     setPrevInputText(ref.current.value);
   };
+
+  useEffect(() => {
+    if (!isSerene) {
+      headerRef.current.classList.add("retract");
+    } else {
+      headerRef.current.classList.remove("retract");
+    }
+  });
 
   console.log(data);
 
   return (
     <SearchStyled>
-      <Container>
-        <Form onSubmit={handleSubmit}>
-          <InputGroup>
-            <input
-              ref={ref}
-              className="searchBox"
-              placeholder="Enter a place"
-            />
-            <Button type="submit">
-              <BsSearch />
-              <span className="d-none d-sm-inline">Search</span>
-            </Button>
-          </InputGroup>
-        </Form>
-        <div className="search-results">
-          {loading ? (
-            <SpinningCircle />
-          ) : data.search &&
-            (data.search.users.length > 0 ||
-              data.search.properties.length > 0) ? (
-            <>
-              {data.search.properties.length > 0 && (
+      <header ref={headerRef}>
+        <Container>
+          <h1>
+            Let's find you
+            <br />
+            <span className="big-text">a comfortable home.</span>
+          </h1>
+          <Form onSubmit={handleSubmit}>
+            <InputGroup>
+              <input
+                ref={ref}
+                className="search-box"
+                placeholder="Enter a place"
+              />
+              <Button type="submit">
+                <BsSearch />
+                <span className="d-none d-sm-inline">Search</span>
+              </Button>
+            </InputGroup>
+          </Form>
+        </Container>
+      </header>
+      <div className="search-results">
+        {loading ? (
+          <SpinningCircle />
+        ) : data.search &&
+          (data.search.users.length > 0 ||
+            data.search.properties.length > 0) ? (
+          <>
+            {data.search.properties.length > 0 && (
+              <>
+                <Container className="best-match-header">
+                  <img className="logo" src="images/home-vector.png" alt="" />
+                  <h2>BEST MATCHES</h2>
+                </Container>
+                <PropertyList data={data.search.properties} />
+              </>
+            )}
+            {data.search.users.map((user) => {
+              const { id, firstName, lastName, avatar } = user;
+              return (
                 <>
-                  <Container className="best-match-header">
-                    <img className="logo" src="images/home-vector.png" alt="" />
-                    <h2>BEST MATCHES</h2>
-                  </Container>
-                  <PropertyList data={data.search.properties} />
-                </>
-              )}
-              {data.search.users.map((user) => {
-                const { id, firstName, lastName, avatar } = user;
-                console.log("id: " + id);
-                return (
-                  <>
-                    <Container key={id}>
-                      <div className="user-card">
-                        <img
-                          className="avatar"
-                          src={avatar}
-                          alt={`${firstName}, ${lastName}`}
-                        />
-                        <div className="info">
-                          <div className="header">
-                            <h2 className="fullname">
-                              {(firstName + " " + lastName).toUpperCase()}
-                            </h2>
-                            <a href="#" className="follow">
-                              Follow
-                            </a>
-                          </div>
-                          <p>Owned properties - {user.properties.length}</p>
+                  <Container key={id}>
+                    <div className="user-card">
+                      <img
+                        className="avatar"
+                        src={avatar}
+                        alt={`${firstName}, ${lastName}`}
+                      />
+                      <div className="info">
+                        <div className="header">
+                          <h2 className="fullname">
+                            {(firstName + " " + lastName).toUpperCase()}
+                          </h2>
+                          <a href="#" className="follow">
+                            Follow
+                          </a>
                         </div>
+                        <p>Owned properties - {user.properties.length}</p>
                       </div>
-                    </Container>
-                    <PropertyList data={user.properties} />
-                  </>
-                );
-              })}
-            </>
-          ) : (
-            <>
-              {prevInputText && (
-                <p className="no-matches-msg">
-                  No property matched your search. Try a different search.
-                </p>
-              )}
-            </>
-          )}
-        </div>
-      </Container>
+                    </div>
+                  </Container>
+                  <PropertyList data={user.properties} />
+                </>
+              );
+            })}
+          </>
+        ) : (
+          <>
+            {prevInputText && (
+              <p className="no-matches-msg">
+                No property matched your search. Try a different search.
+              </p>
+            )}
+          </>
+        )}
+      </div>
     </SearchStyled>
   );
 };

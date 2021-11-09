@@ -10,7 +10,7 @@ function App() {
     <div className="App">
       <Router>
         <Routes>
-          <Route path="/" element={<Search />} />
+          <Route path="/" element={<Search />} /> */}
           <Route path="/properties/:id" element={<Property />} />
           <Route path="*" element={<NotFound />} />
         </Routes>

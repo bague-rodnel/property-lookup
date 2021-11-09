@@ -29,7 +29,8 @@
   },
   "scripts": {
     "start": "node api/bin/www",
-    "build": "react-scripts build"
+    "build": "react-scripts build",
+    "test": "react-scripts start"
   },
   "eslintConfig": {
     "extends": [
